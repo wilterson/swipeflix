@@ -1,7 +1,12 @@
+import { Like } from 'src/like/entities/like.entity';
+import * as bcrypt from 'bcrypt';
+
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -19,6 +24,14 @@ export class User {
   @Column()
   password: string;
 
+  @OneToMany(() => Like, (like) => like.user)
+  likes: Like[];
+
   @CreateDateColumn()
   created_at: Date;
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 }

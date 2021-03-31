@@ -19,8 +19,9 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id') id: string) {
-    await this.userService.findOne(+id);
+  async delete(@Param() params) {
+    const { id } = params;
+    await this.userService.findOne(id);
 
     this.userService.delete(+id);
   }
@@ -31,8 +32,9 @@ export class UserController {
   }
 
   @Get(':id')
-  show(@Param('id') id: string): Promise<User> {
-    return this.userService.findOne(+id);
+  show(@Param() params): Promise<User> {
+    const { id } = params;
+    return this.userService.findOne(id);
   }
 
   @Post()
@@ -41,13 +43,11 @@ export class UserController {
   }
 
   @Put(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() body: UpdateUserDto,
-  ): Promise<User> {
-    await this.userService.findOne(+id);
-    await this.userService.update(+id, body);
+  async update(@Param() params, @Body() body: UpdateUserDto): Promise<User> {
+    const { id } = params;
+    await this.userService.findOne(id);
+    await this.userService.update(id, body);
 
-    return await this.userService.findOne(+id);
+    return await this.userService.findOne(id);
   }
 }
