@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindConditions, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -26,8 +26,8 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  findOne(id: number): Promise<User> {
-    return this.userRepository.findOneOrFail(+id);
+  findOne(findData: FindConditions<User>): Promise<User> {
+    return this.userRepository.findOneOrFail(findData);
   }
 
   async update(id: number, data: UpdateUserDto): Promise<void> {

@@ -9,6 +9,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity({ name: 'users' })
 export class User {
@@ -22,6 +23,7 @@ export class User {
   email: string;
 
   @Column()
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @OneToMany(() => Like, (like) => like.user)

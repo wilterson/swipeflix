@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,13 +8,18 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { User } from 'src/user/entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(private userService: UserService) {}
 
@@ -35,11 +41,6 @@ export class UserController {
   show(@Param() params): Promise<User> {
     const { id } = params;
     return this.userService.findOne(id);
-  }
-
-  @Post()
-  store(@Body() body: CreateUserDto): Promise<User> {
-    return this.userService.store(body);
   }
 
   @Put(':id')

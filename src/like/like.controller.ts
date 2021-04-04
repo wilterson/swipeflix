@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { LikeService } from './like.service';
 import { CreateLikeDto } from './dto/create-like.dto';
 import { UpdateLikeDto } from './dto/update-like.dto';
 
 @Controller('likes')
+@UseInterceptors(ClassSerializerInterceptor)
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
 
